@@ -1,0 +1,7 @@
+base    ajaxpeon
+author  iamchenxin
+email
+date    2015-02-27
+name    ajaxpeon
+desc    ajaxpeon
+url     http://dokuwiki.org/plugin:ajaxpeon

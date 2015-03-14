@@ -1,0 +1,26 @@
+
+#xxrightbar{
+    position: fixed;
+    top: 3em;
+    right: 0;
+    display: none;
+}
+#xxpageid{
+    font-size: 90%;
+}
+
+#xxdictck{
+    font-size: 75%;
+}
+#xxsearch{
+    font-size: 90%;
+}
+
+#xxrightbar .xxresult{
+    overflow-y: scroll;
+    height: 900px;
+}
+
+#xxrightbar #dw__toc{
+    margin: 0px;
+}
