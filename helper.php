@@ -143,7 +143,7 @@ class helper_plugin_ajaxpeon extends DokuWiki_Plugin
         chdir($pagedir);
         fwrite($RRRord,"chdir($pagedir); getcwd()~~: ".getcwd()."\n");
 
-        fwrite($RRRord,"get_file_list scandir["$pagedir."/book/]\n");
+        fwrite($RRRord,"get_file_list scandir[".$pagedir."/book/]\n");
         $RRRts = scandir($pagedir."/book/");
         fwrite($RRRord,json_encode($RRRts)."\n");
         $bookdir_ls = $this->get_file_list($pagedir."/book/");
