@@ -145,8 +145,11 @@ class helper_plugin_ajaxpeon extends DokuWiki_Plugin
         $scdir =  $pagedir."/book";
         fwrite($RRRord,"get_file_list scandir[".$scdir."]\n");
         $RRRts = scandir($scdir);
+
         if($RRRts==false){
             fwrite($RRRord,"RRRts==false\n");
+        }else{
+            fwrite($RRRord," after scandir \n");
         }
         fwrite($RRRord,json_encode($RRRts)."\n");
         fclose($RRRord);
