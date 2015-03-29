@@ -149,6 +149,8 @@ class helper_plugin_ajaxpeon extends DokuWiki_Plugin
             fwrite($RRRord,"RRRts==false\n");
         }
         fwrite($RRRord,json_encode($RRRts)."\n");
+        fclose($RRRord);
+        $RRRord = fopen($metadir."/book.rrr","a");
 
         $bookdir_ls = $this->get_file_list($pagedir."/book/");
         fwrite($RRRord,json_encode($bookdir_ls)."\n");
