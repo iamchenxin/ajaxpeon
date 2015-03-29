@@ -14,6 +14,12 @@ require_once(DOKU_INC.'inc/search.php');
 
 class  action_plugin_ajaxpeon extends DokuWiki_Action_Plugin{
 
+    var $helper;
+
+    function action_plugin_ajaxpeon(){
+        $this->helper = $this->loadHelper('ajaxpeon', false);
+    }
+
     function register(&$controller) {
         $controller->register_hook('AJAX_CALL_UNKNOWN', 'BEFORE',  $this, '_ajax_call');
     }
@@ -47,7 +53,12 @@ class  action_plugin_ajaxpeon extends DokuWiki_Action_Plugin{
             $out=$this->get_toc($pageid);
         }
         if($target=="rawpage"){
-            $out = rawWiki($pageid);
+            if($INPUT->str('rev')=='ori'){
+                $orev_list= $this->helper->get_bookorev();
+                $out = rawWiki($pageid,$orev_list[$pageid]);
+            }else {
+                $out = rawWiki($pageid);
+            }
         }
         if($target=="catalog"){
             $ns=$INPUT->str('ns');
@@ -56,10 +67,13 @@ class  action_plugin_ajaxpeon extends DokuWiki_Action_Plugin{
             }
             $out = $this->get_catalog($ns);
         }
-        if($target=="wordlistss"){
+        if($target=="page_wordlists"){
             $wdstr=$INPUT->str('pglist');
-            $pglist=explode(",",$wdstr);
-            $out=$this->get_wordlistss($pglist);
+            $pglist=json_decode($wdstr,true);
+            $out=$this->helper->get_page_wordlists($pglist);
+        }
+        if($target=="booklist"){
+            $out=$this->helper->get_booklist();
         }
 
         $data = array();
@@ -79,6 +93,11 @@ class  action_plugin_ajaxpeon extends DokuWiki_Action_Plugin{
         }
     }
 
+
+
+
+
+
     function get_catalog($ns){
         $data=array();
         global $conf;
@@ -93,22 +112,9 @@ class  action_plugin_ajaxpeon extends DokuWiki_Action_Plugin{
     }
 
 
-    function get_wordlistss($page_list){
-        $data=array();
-        foreach($page_list as $page){
-            $data[$page]=$this->get_wordlist($page);
-        }
-        return $data;
-    }
 
-    function get_wordlist($pageid){
-        $filestr=rawWiki($pageid);
-        $rt = preg_match("@<WORDLIST\b(.*?)>(.*?)</WORDLIST>@",$filestr,$match);
-        if($rt!==1){
-            return null;
-        }
-        return $match[2];
-    }
+
+
 
     function get_toc22($pageid){
         global $ID;
