@@ -123,6 +123,9 @@ class helper_plugin_ajaxpeon extends DokuWiki_Plugin
         $metadir = $conf["metadir"];
         $pagedir = $conf['datadir'];
         $pretime=0;
+        $RRRord = fopen($metadir."/book.rrr","w");
+        fwrite($RRRord,"iam in RRR\n");
+        fwrite($RRRord,$metadir."/book.log"."\n");
         if(is_readable($metadir."/book.log"))
         {
             $htmp=fopen($metadir."/book.log","r");
@@ -136,7 +139,9 @@ class helper_plugin_ajaxpeon extends DokuWiki_Plugin
         }
 
         $predir= getcwd();
+        fwrite($RRRord,"$predir= getcwd() ~~: ".$predir."\n");
         chdir($pagedir);
+        fwrite($RRRord,"chdir($pagedir); getcwd()~~: ".getcwd()."\n");
         $bookdir_ls = $this->get_file_list("book");
         $flat_data=array();
         $orev_data=array();
@@ -154,6 +159,8 @@ class helper_plugin_ajaxpeon extends DokuWiki_Plugin
         fwrite($forev,json_encode($orev_data));
         fclose($forev);
         $this->booklog($metadir."/book.log");
+
+        fclose($RRRord);
 //    $fbooklog= fopen($metadir."/book.data","w+");
     }
 
