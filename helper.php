@@ -216,6 +216,15 @@ class helper_plugin_ajaxpeon extends DokuWiki_Plugin
         $orev_list = json_decode($fstr,true);
         return $orev_list;
     }
+
+    function merge_wordlist($w_txt1,$w_txt2){
+        $list1 = explode(",",$w_txt1);
+        $list2 = explode(",",$w_txt2);
+        $list3 = array_merge($list1,$list2);
+        sort($list3);
+        $list_rt = array_unique($list3);
+        return implode(",",$list_rt);
+    }
     /*
     function get_wordlistss($page_list){
         $data=array();

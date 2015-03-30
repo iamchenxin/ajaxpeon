@@ -1,6 +1,5 @@
 <?php
 /**
- * Created by PhpStorm.
  * User: z9764
  * Date: 2015/3/8
  * Time: 2:29
@@ -60,6 +59,30 @@ class  action_plugin_ajaxpeon extends DokuWiki_Action_Plugin{
                 $out = rawWiki($pageid);
             }
         }
+        if($target=="writeraw"){
+            $ori_txt = rawWiki($pageid);
+            $ori_len = strlen($ori_txt);
+            $subtarget = $INPUT->str('sub');
+            $rec_txt = $INPUT->str('txt');
+            $store_txt=null;
+            switch($subtarget){
+                case "add":
+                    $store_txt=$ori_txt.$rec_txt;
+                    break;
+                case "wordlist":
+                    $store_txt = $this->helper->merge_wordlist($ori_txt,$rec_txt);
+                    break;
+                case "write":
+                    $store_txt = $rec_txt;
+                    break;
+            }
+            if($store_txt!=null){
+                saveWikiText($pageid,$store_txt,"L".strlen($store_txt));
+                $out="origin txt len:".$ori_len.",you add:".(strlen($store_txt)-$ori_len);
+            }else{
+                $out="do nothing,please ensure set the mdata['sub']";
+            }
+        }
         if($target=="catalog"){
             $ns=$INPUT->str('ns');
             if($ns==null){
@@ -75,6 +98,7 @@ class  action_plugin_ajaxpeon extends DokuWiki_Action_Plugin{
         if($target=="booklist"){
             $out=$this->helper->get_booklist();
         }
+
 
         $data = array();
         $data["content"]=$out;
