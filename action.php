@@ -44,6 +44,7 @@ class  action_plugin_ajaxpeon extends DokuWiki_Action_Plugin{
 
         $reflect = $INPUT->str("reflect");
 
+        $data = array();
         $out="";
         if($target=="page"){
             $out=$this->get_page($pageid);
@@ -98,9 +99,16 @@ class  action_plugin_ajaxpeon extends DokuWiki_Action_Plugin{
         if($target=="booklist"){
             $out=$this->helper->get_booklist();
         }
+        if($target=="user"){
+            $out=$_SERVER['REMOTE_USER'];
+            if($out==null){
+                $data["inf"]="not login";
+            }
+
+        }
 
 
-        $data = array();
+
         $data["content"]=$out;
         if($reflect!=null) {
             $data["reflect"] = $reflect;
