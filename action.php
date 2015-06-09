@@ -54,7 +54,7 @@ class  action_plugin_ajaxpeon extends DokuWiki_Action_Plugin{
         }
         if($target=="rawpage"){
             if($INPUT->str('rev')=='ori'){
-                $orev_list= $this->helper->get_bookorev();
+                $orev_list= $this->helper->get_learnorev();
                 $out = rawWiki($pageid,$orev_list[$pageid]);
             }else {
                 $out = rawWiki($pageid);
@@ -96,8 +96,8 @@ class  action_plugin_ajaxpeon extends DokuWiki_Action_Plugin{
             $pglist=json_decode($wdstr,true);
             $out=$this->helper->get_page_wordlists($pglist);
         }
-        if($target=="booklist"){
-            $out=$this->helper->get_booklist();
+        if($target=="learnlist"){
+            $out=$this->helper->get_learnlist();
         }
         if($target=="user"){
             $out=$_SERVER['REMOTE_USER'];

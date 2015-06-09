@@ -26,34 +26,34 @@ class helper_plugin_ajaxpeon extends DokuWiki_Plugin
         return $out;
     }
 
-    function make_book_cata(){
+    function make_learn_cata(){
         global $conf;
         $metadir = $conf["metadir"];
-        $bookdir = $metadir."/book/";
-        $filelist = scandir($bookdir);
-        $booklist = array();
+        $learndir = $metadir."/learn/";
+        $filelist = scandir($learndir);
+        $learnlist = array();
         foreach($filelist as $fname){
             if(strpos($fname,".changes")){
-                $tmphf = fopen($bookdir.$fname,"r");
+                $tmphf = fopen($learndir.$fname,"r");
                 $tmpstr= fgets($tmphf);
                 $namelen =strlen($fname);
                 $rawnlen = $namelen-8;
                 if(strlen($tmpstr)>10){
-                    $booklist[]=substr($tmpstr,0,10)."\t".substr($fname,0,$rawnlen);
+                    $learnlist[]=substr($tmpstr,0,10)."\t".substr($fname,0,$rawnlen);
                 }
             }
         }
-        $booklstr = join("\n",$booklist);
-        $outfile = fopen($metadir."/book.list","w");
-        fwrite($outfile,$booklstr);
+        $learnlstr = join("\n",$learnlist);
+        $outfile = fopen($metadir."/learn.list","w");
+        fwrite($outfile,$learnlstr);
         fclose($outfile);
     }
 
-    function get_book_list(){
+    function get_learn_list(){
 
     }
 
-    function get_book_words($book_list){
+    function get_learn_words($learn_list){
 
     }
 
@@ -118,14 +118,14 @@ class helper_plugin_ajaxpeon extends DokuWiki_Plugin
         return $changes_ar;
     }
 
-    function build_book_list($update_span){
+    function build_learn_list($update_span){
         global $conf;
         $metadir = $conf["metadir"];
         $pagedir = $conf['datadir'];
         $pretime=0;
-        if(is_readable($metadir."/book.log"))
+        if(is_readable($metadir."/learn.log"))
         {
-            $htmp=fopen($metadir."/book.log","r");
+            $htmp=fopen($metadir."/learn.log","r");
             $pretime = intval(fgets($htmp));
             fclose($htmp);
         }
@@ -137,28 +137,28 @@ class helper_plugin_ajaxpeon extends DokuWiki_Plugin
 
         $predir= getcwd();
         chdir($pagedir);
-        $bookdir_ls = $this->get_file_list("book");
+        $learndir_ls = $this->get_file_list("learn");
         $flat_data=array();
         $orev_data=array();
-        $book_ns_ls = $this->get_changes_list($bookdir_ls,"book:",$metadir,$flat_data,$orev_data);
+        $learn_ns_ls = $this->get_changes_list($learndir_ls,"learn:",$metadir,$flat_data,$orev_data);
 
         chdir($predir);
 
-        $fbooklist = fopen($metadir."/book.list","w");
-        fwrite($fbooklist,json_encode($book_ns_ls));
-        fclose($fbooklist);
-        $fbookdata= fopen($metadir."/book.flatdata","w");
-        fwrite($fbookdata,json_encode($flat_data));
-        fclose($fbookdata);
-        $forev= fopen($metadir."/book.orev","w");
+        $flearnlist = fopen($metadir."/learn.list","w");
+        fwrite($flearnlist,json_encode($learn_ns_ls));
+        fclose($flearnlist);
+        $flearndata= fopen($metadir."/learn.flatdata","w");
+        fwrite($flearndata,json_encode($flat_data));
+        fclose($flearndata);
+        $forev= fopen($metadir."/learn.orev","w");
         fwrite($forev,json_encode($orev_data));
         fclose($forev);
-        $this->booklog($metadir."/book.log");
-//    $fbooklog= fopen($metadir."/book.data","w+");
+        $this->learnlog($metadir."/learn.log");
+//    $flearnlog= fopen($metadir."/learn.data","w+");
     }
 
 
-    function booklog($logname){
+    function learnlog($logname){
         $outlog=null;
         $pretime=0;
         if(is_readable($logname)==false){
@@ -186,11 +186,11 @@ class helper_plugin_ajaxpeon extends DokuWiki_Plugin
 
 
     function get_page_wordlists($page_list){
-        $this->build_book_list(60*10);
+        $this->build_learn_list(60*10);
         global $conf;
         $metadir = $conf["metadir"];
         $pagedir = $conf['datadir'];
-        $fstr = file_get_contents($metadir."/book.flatdata");
+        $fstr = file_get_contents($metadir."/learn.flatdata");
         $flat_wlist = json_decode($fstr,true);
         $data=array();
         foreach($page_list as $page){
@@ -199,19 +199,19 @@ class helper_plugin_ajaxpeon extends DokuWiki_Plugin
         return $data;
     }
 
-    function get_booklist(){
-        $this->build_book_list(60*10);
+    function get_learnlist(){
+        $this->build_learn_list(60*10);
         global $conf;
         $metadir = $conf["metadir"];
         $pagedir = $conf['datadir'];
-        $fstr = file_get_contents($metadir."/book.list");
+        $fstr = file_get_contents($metadir."/learn.list");
         return $fstr;
     }
 
-    function get_bookorev(){
+    function get_learnorev(){
         global $conf;
         $metadir = $conf["metadir"];
-        $filen= $metadir."/book.orev";
+        $filen= $metadir."/learn.orev";
         $fstr = file_get_contents($filen);
         $orev_list = json_decode($fstr,true);
         return $orev_list;
