@@ -69,4 +69,5 @@ function xxinit_ff(){
     xxright_resize();
 }
 
-jQuery(xxinit_ff);
+// commit this to disable all this js init!!
+// jQuery(xxinit_ff);
