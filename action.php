@@ -19,7 +19,7 @@ class  action_plugin_ajaxpeon extends DokuWiki_Action_Plugin{
         $this->helper = $this->loadHelper('ajaxpeon', false);
     }
 
-    function register(&$controller) {
+    function register( Doku_Event_Handler $controller) {
         $controller->register_hook('AJAX_CALL_UNKNOWN', 'BEFORE',  $this, '_ajax_call');
     }
 
